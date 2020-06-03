@@ -15,7 +15,7 @@ This adds a captcha to the registration page. It's not entirely finished; the er
 
 This makes use of the [anhskohbo/No-Captcha](https://github.com/anhskohbo/no-captcha) library. Composer.json has already been updated to include this, so you can just run `composer update` or equivalent after pulling the branch.
 
-## How to Use
+### How to Use
 
 These instructions are derived from those on the package itself. Note that in this case Laravel will indeed auto-discover the package. So we skip directly to configuration.
 
