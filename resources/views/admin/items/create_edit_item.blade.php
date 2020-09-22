@@ -97,12 +97,6 @@
     </div>
     <div class="col-md">
         <div class="form-group">
-            {!! Form::label('shops[]', 'Purchase Location(s) (Optional)') !!} {!! add_help('You can select up to 10 shops at once.') !!}
-            {!! Form::select('shops[]', $shops, $item && isset($item->data['shops']) ? $item->data['shops'] : '', ['id' => 'shopsList', 'class' => 'form-control', 'multiple']) !!}
-        </div>
-    </div>
-    <div class="col-md">
-        <div class="form-group">
             {!! Form::label('prompts[]', 'Drop Location(s) (Optional)') !!} {!! add_help('You can select up to 10 prompts at once.') !!}
             {!! Form::select('prompts[]', $prompts, $item && isset($item->data['prompts']) ? $item->data['prompts'] : '', ['id' => 'promptsList', 'class' => 'form-control', 'multiple']) !!}
         </div>
@@ -145,7 +139,7 @@
     <h3>Preview</h3>
     <div class="card mb-3">
         <div class="card-body">
-            @include('world._item_entry', ['imageUrl' => $item->imageUrl, 'name' => $item->displayName, 'description' => $item->parsed_description, 'searchUrl' => $item->searchUrl])
+            @include('world._item_entry', ['imageUrl' => $item->imageUrl, 'name' => $item->displayName, 'description' => $item->parsed_description, 'searchUrl' => $item->searchUrl, 'shops' => $shops])
         </div>
     </div>
 @endif
@@ -155,11 +149,7 @@
 @section('scripts')
 @parent
 <script>
-$( document ).ready(function() {    
-    $('#shopsList').selectize({
-            maxItems: 10
-        });
-
+$( document ).ready(function() {
     $('#promptsList').selectize({
         maxItems: 10
     });

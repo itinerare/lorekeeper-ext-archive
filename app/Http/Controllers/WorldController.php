@@ -16,6 +16,7 @@ use App\Models\Character\CharacterCategory;
 use App\Models\Prompt\PromptCategory;
 use App\Models\Prompt\Prompt;
 use App\Models\Shop\Shop;
+use App\Models\Shop\ShopStock;
 
 class WorldController extends Controller
 {
@@ -235,7 +236,6 @@ class WorldController extends Controller
         return view('world.items', [
             'items' => $query->paginate(20)->appends($request->query()),
             'categories' => ['none' => 'Any Category'] + ItemCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'shops' => Shop::orderBy('sort', 'DESC')->get()
         ]);
     }
 
@@ -257,7 +257,7 @@ class WorldController extends Controller
             'name' => $item->displayName, 
             'description' => $item->parsed_description,
             'categories' => $categories->keyBy('id'),
-            'shops' => Shop::orderBy('sort', 'DESC')->get()
+            'shops' => Shop::whereIn('id', ShopStock::where('item_id', $item->id)->pluck('shop_id')->unique()->toArray())->orderBy('sort', 'DESC')->get()
         ]);
     }
 

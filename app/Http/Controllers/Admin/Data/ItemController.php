@@ -11,6 +11,7 @@ use App\Models\Item\Item;
 use App\Models\Item\ItemTag;
 
 use App\Models\Shop\Shop;
+use App\Models\Shop\ShopStock;
 use App\Models\Prompt\Prompt;
 
 use App\Services\ItemService;
@@ -187,7 +188,6 @@ class ItemController extends Controller
         return view('admin.items.create_edit_item', [
             'item' => new Item,
             'categories' => ['none' => 'No category'] + ItemCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'shops' => Shop::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
             'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id')
         ]);
     }
@@ -205,7 +205,7 @@ class ItemController extends Controller
         return view('admin.items.create_edit_item', [
             'item' => $item,
             'categories' => ['none' => 'No category'] + ItemCategory::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'shops' => Shop::where('is_active', 1)->orderBy('id')->pluck('name', 'id'),
+            'shops' => Shop::whereIn('id', ShopStock::where('item_id', $item->id)->pluck('shop_id')->unique()->toArray())->orderBy('sort', 'DESC')->get(),
             'prompts' => Prompt::where('is_active', 1)->orderBy('id')->pluck('name', 'id')
         ]);
     }
@@ -223,7 +223,7 @@ class ItemController extends Controller
         $id ? $request->validate(Item::$updateRules) : $request->validate(Item::$createRules);
         $data = $request->only([
             'name', 'allow_transfer', 'item_category_id', 'description', 'image', 'remove_image', 'rarity',
-            'reference_url', 'artist_alias', 'artist_url', 'uses', 'shops', 'prompts', 'release'
+            'reference_url', 'artist_alias', 'artist_url', 'uses', 'prompts', 'release'
         ]);
         if($id && $service->updateItem(Item::find($id), $data, Auth::user())) {
             flash('Item updated successfully.')->success();
