@@ -6,5 +6,5 @@ This repo is made to archive extensions of mine/their branches which have since 
 
 It stands to mention that the branches here will not be updated; support for them is continued in modified-main only.
 
-Main repo: https://github.com/corowne/lorekeeper
-My fork: https://github.com/itinerare/lorekeeper
+- Main repo: https://github.com/corowne/lorekeeper
+- My fork: https://github.com/itinerare/lorekeeper
